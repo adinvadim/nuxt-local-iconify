@@ -1,5 +1,8 @@
 # Nuxt Local Iconify
 
+Nuxt Icon now support local icons. [See](https://github.com/nuxt/icon/issues/19#issuecomment-2091935313).
+
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
