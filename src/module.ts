@@ -40,13 +40,13 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolve("./runtime/plugin"));
 
     await Promise.all([
-      mkdirp(resolve(nuxt.options.rootDir, options.iconPath)),
-      mkdirp(resolve(nuxt.options.rootDir, options.iconPath, "./monotone/")),
-      mkdirp(resolve(nuxt.options.rootDir, options.iconPath, "./color/")),
+      mkdirp(resolve(nuxt.options.srcDir, options.iconPath)),
+      mkdirp(resolve(nuxt.options.srcDir, options.iconPath, "./monotone/")),
+      mkdirp(resolve(nuxt.options.srcDir, options.iconPath, "./color/")),
     ]);
 
     const monotoneIconSet = await importDirectory(
-      resolve(nuxt.options.rootDir, options.iconPath, "./monotone/"),
+      resolve(nuxt.options.srcDir, options.iconPath, "./monotone/"),
       {
         prefix: options.prefix,
       }
@@ -93,7 +93,7 @@ export default defineNuxtModule<ModuleOptions>({
     });
 
     const colorIconSet = await importDirectory(
-      resolve(nuxt.options.rootDir, options.iconPath, "./color/"),
+      resolve(nuxt.options.srcDir, options.iconPath, "./color/"),
       {
         prefix: `${options.prefix}-color`,
         ignoreImportErrors: true,
