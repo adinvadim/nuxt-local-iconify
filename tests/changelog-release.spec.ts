@@ -85,6 +85,17 @@ describe("parseFragment", () => {
     expect(sections.get("Changes")).toEqual(["- One", "- Two"]);
   });
 
+  it("accepts CRLF line endings", () => {
+    const sections = parseFragment("a.md", "## Changes\r\n\r\n- One\r\n");
+    expect(sections.get("Changes")).toEqual(["- One"]);
+  });
+
+  it("rejects headings that changelogen would read as release boundaries", () => {
+    expect(() => parseFragment("a.md", "## Changes for Node 22.0.0\n\n- X\n")).toThrow(
+      /version number/,
+    );
+  });
+
   it("rejects content before a heading, other headings, and empty sections", () => {
     expect(() => parseFragment("a.md", "- loose\n")).toThrow(/before the first/);
     expect(() => parseFragment("a.md", "## Changes\n\n### Nope\n")).toThrow(/only "## "/);

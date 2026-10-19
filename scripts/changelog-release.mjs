@@ -9,6 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 export const FRAGMENT_DIR = ".changes";
 const FRAGMENT_NAME_RE = /^[a-z0-9][a-z0-9._-]*\.md$/;
 const SECTION_RE = /^## (\S.*)$/;
+const VERSION_LIKE_RE = /\d+\.\d+\.\d+/;
 
 function git(cwd, args) {
   return execFileSync("git", args, {
@@ -43,10 +44,15 @@ function trimBlankEdges(lines) {
 export function parseFragment(name, text) {
   const sections = new Map();
   let heading = null;
-  for (const line of text.split("\n")) {
+  for (const line of text.split(/\r?\n/)) {
     const match = line.match(SECTION_RE);
     if (match) {
       heading = match[1].trim();
+      // changelogen treats any heading containing a semver as a release boundary,
+      // which would truncate the GitHub release body at this heading.
+      if (VERSION_LIKE_RE.test(heading)) {
+        throw new Error(`${name}: heading must not contain a version number`);
+      }
       if (!sections.has(heading)) sections.set(heading, []);
       continue;
     }
